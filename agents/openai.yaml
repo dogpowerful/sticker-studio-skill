@@ -1,0 +1,4 @@
+interface:
+  display_name: "表情工坊"
+  short_description: "制作16张九帧透明GIF表情包，含角色锚点、动作设计、帧对齐与素材打包"
+  default_prompt: "使用 $sticker-studio 制作一套16张动态表情包，先确认角色与动作配字，再用Codex内置生图生成、对齐并打包。"
