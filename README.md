@@ -13,13 +13,13 @@
 可直接克隆（目标目录不存在时）：
 
 ```sh
-git clone https://github.com/homxuwang/sticker-studio-skill.git ~/.codex/skills/sticker-studio
+git clone https://github.com/dogpowerful/sticker-studio-skill.git ~/.codex/skills/sticker-studio
 ```
 
 Windows PowerShell：
 
 ```powershell
-git clone https://github.com/homxuwang/sticker-studio-skill.git "$env:USERPROFILE\.codex\skills\sticker-studio"
+git clone https://github.com/dogpowerful/sticker-studio-skill.git "$env:USERPROFILE\.codex\skills\sticker-studio"
 ```
 
 已有安装先确认本地修改再更新；若当前会话没有发现 skill，可在新会话中调用。

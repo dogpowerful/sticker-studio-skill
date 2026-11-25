@@ -43,7 +43,7 @@
 
 想换角色，可以描述一只有性格的小动物、一个原创吉祥物，或者提供已有角色参考图。先确认人设和动作表，再开始生成。
 
-项目地址：https://github.com/homxuwang/sticker-studio-skill
+项目地址：https://github.com/dogpowerful/sticker-studio-skill
 
 完整安装方法、脚本命令和输入格式都在 README 里。如果你也想给自己的角色做一套动态表情，可以从这里开始。
 

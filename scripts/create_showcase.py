@@ -33,7 +33,7 @@ def compose(source, dest, font_path):
             d.rounded_rectangle((x,y,x+234,y+234),radius=16,fill='#ffffff')
             f=frames[step].resize((226,226),Image.Resampling.LANCZOS)
             canvas.paste(f,(x+4,y+4),f)
-        d.text((32,1128),'Codex 内置生图 + 本地合成  /  github.com/homxuwang/sticker-studio-skill',font=small,fill='#68685d')
+        d.text((32,1128),'Codex 内置生图 + 本地合成  /  github.com/dogpowerful/sticker-studio-skill',font=small,fill='#68685d')
         output.append(canvas)
     output[4].save(dest/'calico-overview.png')
     palette=output[4].quantize(colors=256,method=Image.Quantize.MEDIANCUT)
