@@ -1,80 +1,100 @@
 # 表情工坊 · Sticker Studio
 
-用于 Codex 的动态表情包制作 skill：先确认角色基底与 16 张动作配字，再用 Codex 内置生图生成九帧分镜，完成透明 GIF、角色横向对齐、素材打包和检查。
+把一个角色，做成一整套动态表情。
 
-![三花猫整套动态效果](docs/media/calico-overview.gif)
+表情工坊是一个用于 Codex 的 skill。从角色设定和动作配字开始，使用 Codex 内置生图生成九帧分镜，再完成透明 GIF 合成、对齐与素材打包。
 
-上图由实际产出的 16 张 GIF 同步合成，展示「三花猫的日常营业」。宣传总览采用实色背景，原始单张表情为透明背景。[静态总览](docs/media/calico-overview.png) · [宣传封面](docs/media/cover.png)
+## 生成效果
 
-## 安装与使用
+下面是实际生成的「三花猫的日常营业」，同一套 16 张表情放在一张 GIF 中展示：
 
-将本仓库文件放入 Codex 的 `skills/sticker-studio/` 目录，确保 `SKILL.md` 位于该目录根部。
+![三花猫整套动态表情](docs/media/calico-overview.gif)
 
-可直接克隆（目标目录不存在时）：
+包含「收到喵」「谢谢投喂」「你继续说」「猫猫委屈」「本喵下班」等日常表达。展示图使用浅色背景，原始单张 GIF 为透明背景。
+
+本套单张 GIF 为 **240×240、9 帧、无限循环**，约 **92–114KB**。[查看静态效果大图](docs/media/calico-overview.png)。
+
+## 项目特色
+
+- **先看方案，再开始生成**：先给出角色基底和 16 张动作配字表，确认后再制作。
+- **同一角色，表达不同情绪**：从首张提取 anchor 参考图，后续沿用角色外观，分别设计表情和动作。
+- **使用 Codex 内置生图**：默认不接第三方模型，不需要另外配置 API key。
+- **处理动画中的位置偏移**：固定中文文字牌，按躯干位置校正横向位移，减少身体和文字左右晃动。
+- **支持续跑和局部修复**：保留提示词、源图和角色参考；中断后补齐缺失项，单张有问题可单独重做。
+- **成套交付**：输出透明 GIF、缩略图、封面、图标、横幅、预览页、校验报告及 ZIP。
+
+## 安装
+
+需要可使用内置生图工具的 Codex 会话，以及 **Python 3.10+、Pillow**。脚本负责本地图片处理，本身不调用模型。
+
+将仓库克隆到个人 skill 目录：
 
 ```sh
 git clone https://github.com/dogpowerful/sticker-studio-skill.git ~/.codex/skills/sticker-studio
+python -m pip install Pillow
 ```
 
 Windows PowerShell：
 
 ```powershell
 git clone https://github.com/dogpowerful/sticker-studio-skill.git "$env:USERPROFILE\.codex\skills\sticker-studio"
+python -m pip install Pillow
 ```
 
-已有安装先确认本地修改再更新；若当前会话没有发现 skill，可在新会话中调用。
+确保 `sticker-studio/SKILL.md` 位于安装目录根部。目标目录已存在时，先确认本地修改再更新；如果当前会话没有发现新 skill，可在新会话中调用。
 
-示例：
+## 使用方法
+
+### 1. 描述角色，确认方案
+
+在 Codex 中输入：
 
 ```text
 使用 $sticker-studio，做一套16张动态表情包。
 角色是一只三花猫，先给我角色基底和动作配字表确认。
 ```
 
-默认使用当前可用的 Codex 内置生图工具；不需要第三方模型、API key 或 OpenAI SDK。脚本只做本地处理，需 Python 3.10+ 和 Pillow。图片生成本身需要会话中可用的生图工具。
+可以补充角色性格、服装和画风；已有角色请提供参考图。Skill 会先给出英文角色基底，以及 16 张表情的含义、中文配字与循环动作。
 
-方案确认后可输入「确认，先生成第 1 张并提取 anchor，再完成其余 15 张，保留提示词和源图，检查并打包」。流程为：方案确认 → 第 1 张分镜 → 提取角色 anchor → 补齐分镜 → 封面与横幅 → 固定文字牌与躯干对齐 → 合成 GIF → 校验与视觉检查。
+### 2. 确认后生成
 
-中断后可说「继续这套，复用 anchor 和合格源图」。局部修复可说「第 4 张耳尖被截断，请单独修复，保留旧版重新打包」。已有角色应提供参考图核对身份。
-
-## 实际效果
-
-三花猫示例覆盖收到、好的、谢谢、疑问、无语、哈哈、委屈、生气、裂开、加油、抱抱、摸鱼、下班、早安、晚安和爱你。单张 GIF 为 240×240、九帧、120ms/帧、无限循环，约 92–114KB；已完成技术校验及全部 144 帧静态检查。实时播放验收尚未完成，未提交平台审核。
-
-角色参考能约束外观，不能保证绝对一致。躯干对齐只校正横向平移；手脚、道具、歪头、尺度和首尾接缝仍需检查。白色文字牌必须与耳尖、头饰分离，避免提取时截断角色；错字或身份漂移应定向修复源图。
-
-打包器技术配置为：240px 透明 GIF、9 帧、至少 6px 留白、≤500KB；120px 缩略图、240px 封面、50px 图标、750×400 横幅。配置通过不代表平台实时规则或审核结论。
-
-## 本地脚本
-
-```sh
-python -m pip install Pillow
-python scripts/sticker_pipeline.py anchor --sheet /path/to/sheets/01.png --out /path/to/anchor.png
-python scripts/sticker_pipeline.py build --manifest /path/to/album.json --out /path/to/album-v1
-python scripts/sticker_pipeline.py validate --out /path/to/album-v1/wechat_upload
-python scripts/sticker_pipeline.py qa --out /path/to/album-v1/wechat_upload --dest /path/to/album-v1/qa
+```text
+确认。使用内置生图，先生成第1张并提取anchor作为角色参考，
+再完成其余15张，保留提示词和源图，检查并打包。
 ```
 
-输入格式见 [manifest 说明](references/manifest.md)，生成约束见 [生图说明](references/generation.md)。修复使用新版本目录，保留旧图及生成记录。
+依次完成分镜生成、角色参考提取、封面与横幅生成、拆帧对齐、GIF 合成和检查。生成的是静态九帧分镜，再由本地脚本合成为动画。
 
-产物包括 16 张透明九帧 GIF、缩略图、封面、图标、横幅、预览 HTML、技术校验报告及 ZIP。保留现有 `wechat_upload` 目录名以兼容打包器。
+### 3. 预览与修改
 
-自动校验和逐帧检查不能替代实时播放验收；躯干对齐是启发式处理，仍需查看完整循环。技术配置通过不代表平台审核通过。
+打开输出目录中的 `preview.html`，查看每张动画在深浅背景下的效果。需要续跑或修改时可以直接说：
 
-`build` 拒绝覆盖已有目录，修改后请使用 `album-v2`。`qa` 从最终 GIF 导出深浅底九帧检查图，并创建待填写的 `review_status.json`；它不会自动判定画面质量。打开 `preview.html` 观察完整循环，分别记录技术校验、逐帧、播放和平台审核状态。
-
-## 制作整套宣传总览
-
-```sh
-python scripts/create_showcase.py --album /path/to/album-v1/wechat_upload --dest /path/to/showcase --font /path/to/chinese-font.ttf
+```text
+继续这套，复用已确认的anchor和合格源图，补齐剩余表情。
 ```
 
-提供支持中文的字体，例如 Windows 的 `C:/Windows/Fonts/msyh.ttc`。脚本要求 16 张 GIF 均为九帧、帧时长一致，输出 `calico-overview.gif`、静态总览和封面。总览不替代单张透明素材。
-
-[X 配文](docs/x-post.md) · [公众号配文](docs/wechat-article.md)
-
-## 验证脚本
-
-```sh
-python scripts/test_pipeline.py
+```text
+第4张歪头时耳尖被截断，请单独修复，保留旧版并重新打包。
 ```
+
+## 你会拿到什么
+
+| 文件 | 用途 |
+|---|---|
+| `main/01.gif` 至 `16.gif` | 16 张透明动态表情 |
+| `thumb/01.png` 至 `16.png` | 对应的静态缩略图 |
+| `cover.png`、`icon.png`、`banner.png` | 封面、图标与横幅 |
+| `preview.html` | 深浅背景动画预览 |
+| `manifest.json`、`meanings.csv` | 素材信息与含义词 |
+| `validation.json` | 技术校验结果 |
+| `wechat_upload.zip` | 打包后的素材 |
+
+素材位于 `wechat_upload/`，目录名为兼容现有打包器保留。项目中还会保留 anchor、源分镜和提示词，方便后续迭代。
+
+## 效果说明
+
+角色参考和自动对齐不能保证外观绝对一致或完全没有晃动，文字、手脚、道具和循环接缝仍需视觉复核。本页三花猫示例已通过技术校验和 144 帧静态检查，实时播放验收尚未完成，未提交平台审核。
+
+当前打包器使用 240px 九帧透明 GIF、120px 缩略图、240px 封面、50px 图标及 750×400 横幅配置。技术校验通过不代表平台审核通过。
+
+需要手动处理已有分镜时，参阅 [输入格式与输出说明](references/manifest.md)；生成约束见 [分镜与提示词说明](references/generation.md)。
