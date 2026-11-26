@@ -1,6 +1,6 @@
 ---
 name: sticker-studio
-description: Use when creating a 16-image animated sticker album, converting nine-frame sprite sheets to transparent GIFs, or fixing frame drift, caption wobble, transparency edges, and upload packaging in that workflow.
+description: Create 16-image animated sticker albums from character ideas or real-person photo references, including cartoon character design, nine-frame sprite sheets, transparent GIFs, frame alignment and upload packaging.
 ---
 
 # 表情工坊 · Sticker Studio
@@ -14,6 +14,8 @@ description: Use when creating a 16-image animated sticker album, converting nin
 先交付英文角色基底、16 张「含义词 / 中文配字 / 单一循环动作」表供确认。覆盖收到、好的、谢谢、疑问、无语、哈哈、委屈、生气、裂开、加油、抱抱、摸鱼、下班、早安、晚安等日常语义，按主题调整；不要声称这些是后台搜索量排名。已确认的方案无需重复审批。用户仅要设计时停在方案阶段。
 
 ## 生成与锁定
+
+用户附上真人照片、要求参考照片制作卡通表情时，先读取 [references/photo-to-cartoon.md](references/photo-to-cartoon.md)。使用聊天附件或用户指定的本地图片作为输入，不需要另建上传网站。先确认卡通角色预览，再进入下面的九帧生成流程；已明确确认的形象不重复审批。
 
 读取 [references/generation.md](references/generation.md)。使用当前可用内置 imagegen 工具；不要默认读取 API key、接第三方或调用旧脚本内硬编码模型。遵守工具的参考图查看、透明背景和保存路径规则。
 
